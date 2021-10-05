@@ -14,6 +14,7 @@ let LedX = 0
 let Fahren = false
 let Empfindlichkeit = 45
 radio.setGroup(1)
+serial.redirectToUSB()
 basic.forever(function () {
     if (Fahren) {
         NeigungX = input.rotation(Rotation.Roll)
@@ -26,6 +27,7 @@ basic.forever(function () {
         led.plot(LedX, LedY)
         Geschwindigkeit = 100 - Math.map(NeigungY, Empfindlichkeit * -1, Empfindlichkeit, 0, 100)
         Richtung = Math.map(NeigungX, Empfindlichkeit * -1, Empfindlichkeit, 0, 100)
+        serial.writeLine(convertToText(Richtung))
         radio.sendValue("G", Geschwindigkeit)
         radio.sendValue("R", Richtung)
         basic.pause(50)
